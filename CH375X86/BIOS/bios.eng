@@ -1,0 +1,35 @@
+For 80X86 compatible PC or industrial computer, through the CH375 read and write U disk, you can emulate the hard disk in the BIOS level, the specific method is to use the expansion ROM,
+Support from the U disk to guide the DOS system, support for DOS and other operating system using INT13H, DOS system can see the physical hard disk,
+Supports all similar to the hard disk operation, the hardware needs:
+   1, Compatible with 8086 CPU, compatible PC's BIOS (Note that there may be compatibility issues between the program and some of the BIOS)
+   2, I / O hardware of CH375, used for BIOS program to operate U disk through CH375.
+      You can refer to the circuit diagram of the CH375EDM electronic disk module, or refer to the circuit diagram of the DOS hardware supporting hardware.
+   3, extended ROM hardware, the hardware used to run a BIOS program before DOS starts,
+      As long as the BIOS program slightly modified, you can also boot from the hard disk recording program to achieve pure software.
+      Can refer to the DOS driver supporting hardware circuit diagram.
+   4, the above hardware can be used parallel query connection CH375 IPC U disk card plus a ROM chip to achieve, support for ISA / PCI / PC104.
+   5, only supports imitation ZIP boot and imitation HDD boot U disk, does not support imitation FDD boot.
+   6, the system's hard disk priority guide, a hard disk (or electronic disk) from the hard disk boot, no hard disk boot from the U disk.
+   7, try on the PC, CMOS should be turned off when the original hard disk, to make the U disk to imitate the hard disk boot to C drive.
+   8, if the system has a hard disk, then the CH375 IPC U disk card jumper can be forced to boot from the U disk.
+   9, boot from the U disk, the original drive (or electronic drive) drive letter will become the second physical drive D drive.
+
+  Through a BIOS program, you can make the U disk in DOS system as "the first (or second) physical hard disk", drive letter C drive (or D drive)
+  So U disk can be the same as ordinary hard disk, support FDISK partition, support FORMAT format, support file read and write.
+  DOS programs (including user-compiled applications) can read and write files in a USB flash drive just like ordinary hard disk files.
+
+  Expansion ROM hardware can be either an ISA expansion ROM or a PCI expansion ROM implemented by CH365.
+  Expansion ROM requires an EPROM or FLASH EEPROM, which stores the BIOS program,
+  File CH375ROM.BIN is the BIOS target program files, can be used for ISA or PCI expansion ROM.
+
+  If the CH375EDM is connected to the CH365 chip on the PCI bus, the program automatically gets the I / O base address via CH365.
+  If the CH375EDM is connected to the ISA bus, then you need to specify the I / O base address (that is, the I / O port) of the CH375EDM,
+  The I / O base address can be manually assigned to the 0038H-0039H unit (lower address first) of the CH375ROM.BIN file data,
+  Method is to directly modify the CH375ROM.BIN file, and by modifying the last byte to keep the entire file byte accumulation and 0,
+  For example, CH375EDM I / O base address is 260H, then,
+    1, modify the CH375ROM.BIN file 0038H unit 60H, I / O base low 8,
+    2, modify CH375ROM.BIN file 0039H unit 02H, I / O base high 8,
+    3, modify the CH375ROM.BIN file 07FFH unit ?? H (ROM data byte accumulation and must be 00H)
+  Note that the default ISA or PC104 I / O address is already 0260H.
+
+  Bulk users can customize the BIOS program to save expansion ROM costs while improving compatibility.

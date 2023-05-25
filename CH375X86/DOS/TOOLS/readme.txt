@@ -1,0 +1,2 @@
+如果使用DOS6.22系统，在大于2GU盘时，先用Format_FAT16.exe在winXP下把U盘格式化成FAT16，这时U盘大小变成2G。
+如果使用DOS7.x系统，则FAT32，FAT16都可以，不需要用Format_FAT16工具格式化。

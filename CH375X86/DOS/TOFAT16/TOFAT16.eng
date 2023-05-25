@@ -1,0 +1,12 @@
+Description:
+Although the 80X86 IPC U disk interface card supports a variety of file systems, but DOS itself does not necessarily support a variety of file systems,
+For example, DOS version 7.0 before DOS 5.0 only supports FAT12 and FAT16 file system does not support FAT32,
+Many U-disk market is under WINDOWS formatting, there may be FAT32 file system,
+So this conversion tool is provided for IPC:
+Before reading and writing U disk file, analyze U disk file system,
+If FAT12 or FAT16, then return ERRORLEVEL = 1
+If it is FAT32, then prompts whether conversion is required, convert and return ERRORLEVEL = 2, otherwise return ERRORLEVEL = 3
+If there is an error during operation or conversion, ERRORLEVEL = 4 is returned
+
+ToFAT16.EXE only supports DOS system, it will be inserted in the 80X86 IPC U disk file system from FAT32 to FAT16, converted in the U disk of the original data will be lost!
+ToFAT16 / y plus parameters "/ y", refers to the conversion process prompts you need to enter the uniform input Y, fast conversion, otherwise it will prompt the conversion process before asking for confirmation.

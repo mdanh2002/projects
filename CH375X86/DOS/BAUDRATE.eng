@@ -1,0 +1,39 @@
+About 80X86 IPC through the serial port to read and write U disk additional instructions
+
+By default, the Serial Port U disk interface board uses a higher speed 115200bps communication wave rate,
+Therefore, the IPC's serial port should be compatible with 16C550, and can prohibit the FIFO,
+While some 8086, 80286, 80386 simplified motherboards may not be fully compatible with the 16C550,
+Or does not support 115200bps communication baud rate, or unstable at higher speeds,
+Then only reduce the communication speed, use a lower baud rate,
+For example 57600bps, 38400bps, 22800bps, the lowest 9600bps, the highest 460800bps.
+
+The following provides ways to adjust the communication baud rate.
+  Modify the CH375DOS.SYS file directly with a hexadecimal programmer such as UltraEdit.
+    The following data is for the V1.9 version of the CH375DOS.SYS file:
+    The data of address 007EH is used to set the baud rate of CH375, the default is CCH,
+        The value and the corresponding baud rate is as follows:
+            F3H - 460800bps
+            E6H - 230400bps
+            CCH - 115200bps (default)
+            B2H - 76800bps
+            98H - 57600bps
+            95H - 56000bps
+            64H - 38400bps
+            4EH - 33600bps
+            30H - 28800bps
+    The data of address 007FH is used to set the serial port baud rate of IPC, the default is 01H,
+        The value and the corresponding baud rate is as follows:
+            01H - 115200bps (default)
+            02H - 57600bps
+            03H - 38400bps
+            04H - 28800bps
+example:
+1, the baud rate to 57600bps (default is 115200bps)
+     007EH address data to 98H (default is CCH) to change CH375 serial port
+     007FH address data changed to 02H (default is 01H) to change the serial port itself
+2, the baud rate to 38400bps (default is 115200bps)
+     007EH address data to 64H (default is CCH)
+     007FH address data to 03H (default is 01H)
+3, the baud rate to 28800bps (default is 115200bps)
+     007EH address data to 30H (default is CCH)
+     007FH address data to 04H (default is 01H)

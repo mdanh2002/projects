@@ -1,0 +1,39 @@
+http://www.winchiphead.com/download/
+
+China
+260 R/W Data
+261 R Port Interrupt (b7), W command
+262 R HW Interrupt (b0) Status J1 (b6)
+263 R HW Interrupt (b0) Status J1 (b6)
+264 R/W Data 
+265 R Port Interrupt (b7), W command
+266 R HW Interrupt (b0) Status J1 (b6)
+267 R HW Interrupt (b0) Status J1 (b6)
+268 R/W Data
+269 R Port Interrupt (b7), W command
+26A R HW Interrupt (b0) Status J1 (b6)
+26B R HW Interrupt (b0) Status J1 (b6)
+26C R/W Data
+26D R Port Interrupt (b7), W command
+26E R HW Interrupt (b0) Status J1 (b6)
+26F R HW Interrupt (b0) Status J1 (b6)
+
+lo-tech - Std
+2C0 R/W Data
+2C1 R Port Interrupt (b7), W command
+2C2 R/W Data
+2C3 R Port Interrupt (b7), W command
+2C4 R/W Data 
+2C5 R Port Interrupt (b7), W command
+2C6 R/W Data
+2C7 R Port Interrupt (b7), W command
+
+lo-tech - Fast
+2C0 R/W Data
+2C1 R/W Data
+2C2 R Port Interrupt (b7), W command
+2C3 R Port Interrupt (b7), W command
+2C4 R/W Data 
+2C5 R/W Data
+2C6 R Port Interrupt (b7), W command
+2C7 R Port Interrupt (b7), W command

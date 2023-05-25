@@ -1,0 +1,37 @@
+Name       CH375ISA;
+Designer   W.ch;
+Device     g16v8;
+
+/** Inputs **/
+pin 1  = !iow ;
+pin 2  = a1 ;
+pin 3  = a4 ;
+pin 4  = a5 ;
+pin 5  = a6 ;
+pin 6  = a7 ;
+pin 7  = a8 ;
+pin 8  = a9 ;
+pin 9  = !aen ;
+pin 11 = !ior ;
+pin 13 = int ;
+pin 16 = a17 ;
+pin 17 = a16 ;
+pin 18 = a15 ;
+
+/** Outputs **/
+pin 12 = d0 ;
+pin 14 = !act ;
+pin 15 = !usb ;
+pin 19 = !rom ;
+
+/** Declarations and Intermediate Variable Definitions  **/
+
+field addr = [a9..4] ;
+
+/** Logic Equations **/
+
+rom = aen & !a17 & a16 & a15;
+usb = aen & addr:['h'0260..026f] & !a1 & ( ior # iow );
+act = aen & addr:['h'0260..026f] & ( ior # iow );
+d0  = int;
+d0.oe = aen & addr:['h'0260..026f] & a1 & ior;

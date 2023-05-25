@@ -1,0 +1,21 @@
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\WFF Generic HID Demo 3.exe
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\WFF Generic HID Demo 3.pdb
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\usbGenericHidCommunications.dll
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\usbGenericHidCommunications.pdb
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\ResolveAssemblyReference.cache
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF_Generic_HID_Demo_3.Form1.resources
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF_Generic_HID_Demo_3.Properties.Resources.resources
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\GenerateResource.read.1.tlog
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\GenerateResource.write.1.tlog
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.exe
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.pdb
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.exe
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.pdb
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\usbGenericHidCommunications.dll
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\usbGenericHidCommunications.pdb
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.csprojResolveAssemblyReference.cache
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF_Generic_HID_Demo_3.Form1.resources
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF_Generic_HID_Demo_3.Properties.Resources.resources
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\obj\x86\Debug\WFF Generic HID Demo 3.csproj.GenerateResource.Cache
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\WFF Generic HID Demo 3.exe
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\WFF Generic HID Demo 3\bin\Debug\WFF Generic HID Demo 3.pdb

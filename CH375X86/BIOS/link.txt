@@ -1,0 +1,11 @@
+On the v1.3 bios that i posted the i/o address is located at 0x38-0x39.
+However on the v1.5 bios that ineverland and you posted the i/o address is located at 0x36-0x37.
+
+http://www.vcfed.org/forum/showthread.php?48760-Need-help-when-use-isa-to-usb-card-in-IBM-5160!/page4
+
+0x20 sectors per track,and 0x40 headers
+
+Using BIOS ROM
+400 880 bytes from C:\ to C:\
+32 seconds
+80286 @ 12MHz

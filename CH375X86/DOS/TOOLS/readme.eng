@@ -1,0 +1,2 @@
+If you use the DOS6.22 system, more than 2GU disk, first Format_FAT16.exe winXP U disk formatted into FAT16, then U disk size into 2G.
+If you use DOS7.x system, FAT32, FAT16 can be, do not need Format_FAT16 tools to format.

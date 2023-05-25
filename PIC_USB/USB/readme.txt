@@ -1,0 +1,1 @@
+http://www.waitingforfriday.com/index.php/Building_a_PIC18F_USB_device

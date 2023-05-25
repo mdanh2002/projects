@@ -1,0 +1,126 @@
+For the 8086-compatible PC industrial computer or microcontroller using the DOS system, read and write the U disk or move the hard disk through the CH375,
+You can use CH375's DOS device driver, the U disk simulation as a hard disk, in DOS will increase a logical drive (usually D drive)
+The usage is similar to ordinary hard disk and electronic disk and RAM memory disk, the method also supports U disk with hot-swappable, more convenient exchange of data.
+
+Hardware Requirements: Compatible with the 8086 CPU, CH375 and the connection between the CPU can be any of the following:
+Parallel port can be made into U disk card, for example: PCI card, ISA card, PC104 interface board.
+    Advantages: fast (about 200K to 500K bytes per second), high efficiency, the card comes with 5V power supply, U disk with hot-swappable.
+    Disadvantages: more connections, installation than serial board complex.
+Serial port mode can be made U disk interface board, for example: RS232 serial port board, TTL serial port board.
+    Advantages: easy hardware connection, support U disk with hot-swappable, support for the entire serial port hardware hot-swappable.
+    Disadvantages: slow (about 9K to 10K bytes per second), the need for 5V power supply (serial port connection does not include the power supply).
+Qin Heng Electronics can provide the above board samples: PCI card, ISA card, PC104 interface board, RS232 serial port board, TTL serial port board.
+
+Program uses and features:
+  1, used for non-real-time data exchange between computer and industrial computer / embedded system.
+  2, used for backup of industrial computer / embedded system in the important data.
+  3, the use of the market U disk, flash memory and electronic disk easier to purchase, the capacity is not limited.
+  4, support DOS 3.X to 7.X version, support WINDOWS 3.X, WINDOWS 95/98 / ME and other operating systems.
+  5, support for operating system can support all file systems, for example, with DOS 7.X can support FAT12 / FAT16 / FAT32.
+  6, only need a driver file CH375DOS.SYS, the length is less than 5K, only need RAM memory after loading about 4K.
+  7, the driver only works in the U disk read and write applications, Idle does not affect the original DOS system and IPC running.
+  8, support U disk with hot-swappable, easy to use, U disk can only be inserted when needed.
+  9, serial port support Hot-swappable, easy to use, serial port board itself and U disk can only be connected to the serial port when needed.
+  10, parallel port mode if you increase the expansion ROM, you can also support the boot from the U disk operating system (compatibility as DOS drive).
+  11, very low cost, batch products as long as several dozen yuan.
+  12, if you do not use the DOS operating system, you can refer to the CH375 U disk file-level subroutine library for API calls.
+  13, simplify and parallel connection only need an address chip select decoding and a CH375 chip, the driver file length is less than 3K.
+
+A detailed description of the hardware circuit
+
+1, parallel port connection, query mode
+   The driver uses the inquiry way to deal with the interruption of CH375, the concrete circuit may consult CH375EDM, the hardware I / O address respectively is:
+     I / O base address + 0 for the CH375 data port, readable and readable,
+     I / O base address + 1 is the command port of CH375, write only,
+     I / O base address + 2 is the status port of CH375, read-only, bit 0 of which is the INT # pin status of CH375, which is convenient for query interrupt.
+   If the CH375 is connected to the ISA bus or the PC104 bus, then it is necessary to specify the I / O base address (ie I / O port) of the CH375,
+     Refer to the schematic in PC104ISA.PDF, which can be applied to the ISA or PC104 bus. The ROM chip U4 in the figure is optional.
+     I / O base address in the picture is 260H, of course, you can use other I / O address. Figure 27C256 optional, only used to support boot from the U disk.
+   If the CH375 is connected to the PCI bus through the PCI chip, CH365, the driver will automatically acquire the I / O base address without specifying it.
+     Refer to the schematic in PCI.PDF.
+
+1.X simplified parallel connection, the internal register query
+   Simplify the parallel connection only supports CH375A and CH375B chips (does not support the CH375S chip), does not require status port (I / O base address +2),
+   In the circuit design, only need to offer chip select signal CS # CH375, read RD #, write WR #, address A0 and data line D7-D0,
+   In this simplified parallel port connection, you must use the CH375DOS.SYS driver in the NO_INTER subdirectory with a smaller file size,
+   The driver queries the low-level interrupt on the INT # pin of the query chip by querying the internal registers of CH375A and CH375B.
+
+   For the CH375B chip, it is recommended to use a simplified parallel port connection that does not require a status port (I / O base address +2), without connecting the INT # pin
+
+2, parallel port connection, interrupt mode (Recommended: Please use the query method)
+   The driver uses the hardware interrupt to handle the interrupt of CH375, the INT # pin of CH375 connects to the interrupt request end of the host,
+   Note that since the INT # of CH375 is active low, both ISA and PC104 need to be inverted before connecting to the interrupt.
+   Support any interrupt number, support any I / O address, using standard parallel port connection, you can refer to CH375 chip manual,
+   CH375 CS # pin by the I / O address decoding circuit to generate low-effective chip select signal, the hardware I / O address is:
+     I / O base address + 0 for the CH375 data port, readable and readable,
+     I / O base address + 1 is the command port of CH375, write only.
+     Refer to the schematic in ISA_INT.PDF.
+
+3, serial port connection, TTL level
+   Host serial port must be compatible with 16C550 and FIFO can be prohibited, serial port number is not limited, the input and output TTL level.
+   The driver uses the inquiry way to deal with the interruption of CH375, CH375 work in the serial port way:
+     The RXD pin of CH375 is connected to the TXD of a serial port of the host, the TXD pin of CH375 is connected to the RXD of a certain serial port of the host,
+     The RSTI pin of CH375 is connected to the RTS # of a serial port of the host, and the INT # pin of CH375 is connected to the CTS # of a certain serial port of the host.
+   The CH375 chip is reset at 9600 bps once, and then both drivers are switched to 115200 bps.
+   Refer to the SERIAL.PDF schematic diagram, remove the TTL / RS232 level conversion chip U2, its left and right signal directly connected.
+
+4, serial port connection, RS232 level
+   Ibid, the difference is that the host serial port input and output for the RS232 level,
+   Therefore, the two inputs of CH375, RXD and RSTI, the two outputs, TXD and INT #, must also be converted between TTL and RS232 levels
+   Refer to the schematic in SERIAL.PDF for level conversion by U2, noting that the U2 capacitor has not been drawn yet.
+
+Specific instructions on the DOS driver
+  Only need to copy the CH375DOS.SYS file to compatible PC industrial hard disk or other electronic startup disk,
+  Then modify the DOS configuration file CONFIG.SYS, without this file you can use EDIT or Notepad to create.
+
+  Add the following line to the CONFIG.SYS DOS configuration file to enable the CH375 DOS driver:
+      DEVICE = CH375DOS.SYS @nnnn #rr% mm
+  If CH375DOS.SYS is not in the root directory, you should also specify the full path to the directory containing it. Parameter Description:
+  1, nnnn is the I / O base address in hexadecimal, the default is 0. If nnnn is 0 then the driver will automatically get the I / O base address,
+     For PCI should be 0, for ISA and PC104 and serial port, should specify the I / O endpoint address.
+  2, rr is the interrupt number in decimal, the default is 0. If rr is 0, then the driver uses the query method, otherwise use the interrupt mode.
+     If rr is 91 or 92 then represents a special meaning, not to interrupt number, but to specify the use of serial port connection,
+     rr is 91 static serial port connection, if the serial port connection fails during DOS startup, then the driver will exit,
+     rr to 92 Description Dynamic serial port connection, even if the serial port DOS connection fails, the driver does not quit, but ready to connect.
+  3, mm is the I / O speed, the effective value is 0 to 255, the smaller the value, the faster the read and write speed, the default is 3, most low-speed IPC can be set to 2.
+
+  For example, ISA card or PC104 board, query, I / O base address 2A0H, then: DEVICE = CH375DOS.SYS @ 2A0
+  For example, by the CH365 PCI card, query, then: DEVICE = CH375DOS.SYS
+  For example, 8086 low-speed industrial computer, query mode, I / O base address is 320H, then: DEVICE = CH375DOS.SYS @ 320% 2
+  Such as ISA card or PC104 board, interrupt IRQ5, I / O base address is 260H, then: DEVICE = CH375DOS.SYS @ 260 # 5
+  For example, through the serial port 1 static connection, that is, the serial port hardware is always attached, then: DEVICE = CH375DOS.SYS @ 3F8 # 91
+  For example, through the serial port 2 dynamic connection, intended to support serial hardware hot-plug, then: DEVICE = CH375DOS.SYS @ 2F8 # 92
+  Example 1, the contents of a CONFIG.SYS file instance, you can use Notepad to open the view or create
+        DEVICE = C: \ DOS \ HIMEM.SYS
+        DEVICE = C: \ DOS \ RAMDRIVE.SYS 1024
+        DEVICE = C: \ WCH \ CH375DOS.SYS @ 3F8 # 92% 1
+  Example 2, the contents of a CONFIG.SYS file instance, you can use Notepad to open to view or create
+        DEVICE = C: \ CH375DOS.SYS @ 260% 2
+        DEVICE = C: \ DOS \ HIMEM.SYS
+
+  When the CH375 DOS driver starts normally, the version information and the hardware configuration information will be displayed as follows
+      CH375: I / O address = 0260H, interrupt = 00, add disk D:
+  0260H in the upstream is the I / O address specified by the user in the CONFIG.SYS file, the interrupt number 00 indicates the query mode,
+  Up in the D drive, if the computer already exists D drive, then the U drive letter may be E, and so on.
+  U disk for the use of exactly the same as ordinary hard disk and electronic disk, the main difference is that U disk can support hot swap, in the course of use,
+  U disk can be pulled out or replace another U disk, but should not be pulled out during the write operation, or may lose data or even damage the U disk.
+  After the U disk is unplugged, the original drive letter operation will always return an error until the next U disk is inserted, and the processing method and effect are similar to the floppy disk.
+
+  DOS application can refer to CH375CHK.C I / O operation query U disk is connected, and learn U disk drive letter and so on.
+  In order to simulate a floppy disk A or B disk, you can use the DOS system SUBST command, for example, if the U disk is the D drive, then execute the DOS command line
+      SUBST A: D: \
+  You can make the A disk actually point to the D drive, so as to keep the application compatible with the floppy disk. The A drive or the D drive actually corresponds to the U disk.
+
+  The error message when starting is:
+      CH375: I / O data error
+        Description I / O data test error, it may be the physical connection with the CH375 is incorrect, or the address is decoded incorrectly
+      CH375: interrupt timeout
+        Description interrupt timeout or serial timeout, there may be INT # interrupt CH375 pin with a physical connection is incorrect
+      CH375: disk not found
+        Note DOS boot CH375 driver U disk is not inserted, just prompted U disk has not been inserted, does not affect the use of
+      CH375: error boot sector
+        Note DOS boot CH375 driver U disk can not be read, it may be U disk damaged or not supported by other USB devices
+      CH375: wait serial
+        Description specified interrupt number 92 using dynamic serial port connection, and at this time the driver has not detected the serial port hardware
+      CH375A only: parameter error
+        Description NO_INTER subdirectories used in the driver, the driver only supports CH375A or CH375B chip, only supports parallel query

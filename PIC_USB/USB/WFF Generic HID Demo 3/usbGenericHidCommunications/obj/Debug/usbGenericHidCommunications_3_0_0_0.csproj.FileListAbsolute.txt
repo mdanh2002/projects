@@ -1,0 +1,9 @@
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\bin\Debug\usbGenericHidCommunications.dll
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\bin\Debug\usbGenericHidCommunications.pdb
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\obj\Debug\ResolveAssemblyReference.cache
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\obj\Debug\usbGenericHidCommunications.dll
+G:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\obj\Debug\usbGenericHidCommunications.pdb
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\bin\Debug\usbGenericHidCommunications.dll
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\bin\Debug\usbGenericHidCommunications.pdb
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\obj\Debug\usbGenericHidCommunications.dll
+C:\PROGRAMS\PICPROG\USB\WFF Generic HID Demo 3\usbGenericHidCommunications\obj\Debug\usbGenericHidCommunications.pdb
