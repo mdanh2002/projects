@@ -1,0 +1,34 @@
+build/default/production/main.o:  \
+main.c  \
+config.h  \
+uart.h  \
+st7565.h  \
+queue.h  \
+ FATFS/diskio.h  \
+FATFS/integer.h  \
+FATFS/ff.h  \
+FATFS/ffconf.h  \
+FATFS/mmc_pic.h  \
+ MP3/mad.h  \
+MP3/mad_types.h  \
+MP3/mad_bits.h  \
+MP3/mad_stream.h  \
+ MP3/mad_frame.h  \
+MP3/mad_synth.h  \
+MP3/mad_huffman.h  \
+MP3/mad_layer3.h  \
+ MP3/mad_decoder.h  \
+spi_lib.h  \
+type_const.h  \
+pwm.h  \
+ch376/ch376.h  \
+ ch376/ch376_const.h  \
+icons.h  \
+i2c_lib.h  \
+si473x.h  \
+radio_const.h  \
+ssb_patch.h  \
+ dht11.h  \
+24lc256.h  \
+shortwave_db.h  \
+trig.h 

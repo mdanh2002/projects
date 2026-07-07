@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name Connector)(type Legacy)(uri ${KIPRJMOD}/Connector.lib)(options "")(descr ""))
+  (lib (name project-rescue)(type Legacy)(uri ${KIPRJMOD}/project-rescue.lib)(options "")(descr ""))
+  (lib (name dsmp3_v5_ns8002-rescue)(type Legacy)(uri ${KIPRJMOD}/dsmp3_v5_ns8002-rescue.lib)(options "")(descr ""))
+)

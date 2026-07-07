@@ -1,0 +1,190 @@
+OBVIOUS BUGS
+
+1. Do not display mono icon if Always Mono is selected, otherwise display will be distored (in media/radio mode)
+2. Battery threshold too high for 9V alkaline 
+3. Slightly Distorted display after selecting menu in radio mode if station name uses smallest font.
+----------------
+
+Optional code to read SD card via CH376S
+Beep tone to store as WAV samples, remove code to generate (more accurate)
+Add USB Test / SD Test to REC mode
+----------------
+Current duration incorrectly displayed in VBR MP3 if FFWD/REW is used 
+Check contact of SI4735 L/R audio pin to pad during soldering (sometimes low volume on 1 channel)
+Low volume in shortwave when switching from USB to radio (may not be a problem)
+Do not update RDS if new name begins with space and old name doesn't or if name begins with double spaces
+Weird bug in scanning at times (stuck at same frequency)
+Upon reading a corrupt song, repeat previous action (previous or next), not just next
+Check PMD bit to disable unused peripherals (save standby power)
+Scrolling RDS (Power 90 love songs)
+FM RDS better in recording mode (faster CPU speed --> no loss of RDS characters due to polling)
+Best solution is to use RDS interrupt --> not possible due to lack of pins, unless we migrate the SD card to CH376S which will result in 4 pins free
+Implement SD card via CH376 (waste 15mA more but save 4 pins which allows us to implement RDS interrupt)
+CH376 sleep does not work in 8MHz mode (cause wastage of 18mA during alarm if device was turned off totally. If device was turned off with backlight on, no power wastage).
+Add running minute to config file
+Add MIDI player (sound font github SD card)
+Implement File Explorer if possible
+Saturated multiply for vol over amplify
+Reduce size of shortwave database
+--------------------
+Highest speed PIC power consumption = 68mA (reasonable as we're overclocking to 90MIPS). Datasheet listed 70MIPS power consumption at 60mA.
+High speed PWM power consumption = 20mA. 
+--------------------
+Singapore lat/long: 1.287953, 103.851784
+
+Shortwave database size (excluding remarks fields)
+
+swFreqDb2                  0x10474              0x7ff8          0xbff4  (49140)
+swFreqDb1                  0x1846c              0x7fc4          0xbfa6  (49062)
+swFreqDb3                  0x20430              0x7ef4          0xbe6e  (48750)
+swFreqDb4                  0x28324              0x788e          0xb4d5  (46293)
+
+stationNames               0x3441c              0x2c0c          0x4212  (16914)
+siteNames                  0x3fc70               0xa52           0xf7b  (3963)
+swCountries                0x42d12               0x2ee           0x465  (1125)
+swLanguages                0x432ba               0x2a8           0x3fc  (1020)
+
+Total: 144178 raw bytes (16-bit), 216267 flash bytes (24-bit)
+---------------------
+3D printing (cases)
+
+https://www.sculpteo.com/en/upload/?signup=1#_=_
+https://www.3dprintsingapore.com/
+
+Alternative: PIC32MX270F256B-50I/SP 50MHz DIP (256KB flash) + VS1053 (cannot use PIC24, too slow and high current consumption)
+May not be enough to put shortwave database + USB stack (need to simplify shortwave database, e.g. remove site name, store fewer bytes for long / lat)
+
+PIC32MX450F256H-I/MR + free SMT assembly at seeedstudio (120MHz parts, good enough for MP3 player)
+< 100x100mm ($2 @ JLCPCB without shipping)
++ TDA1387 I2S DAC (SOP-8)
+
+microchip parametric search (show all products at tab)
+https://www.microchip.com/paramchartsearch/Chart.aspx?branchID=30063
+---------------------
+Considering freeing up 4 pins (use CH376 for SD card)
+- 1 pin for buzzer (avoid PWM beep, simpler code and less disturbance)
+- 1 pin for SI4735 interrupt (needed for fast RDS display)
+- 2 free pins - candidates:
+    - Bluetooth power (turn on and off Bluetooth from menu), 
+		- GOOD CANDIDATE
+		- Just add transistor as a switch to enable/disable power 
+		
+	- Jumper to switch mode (SD card via PIC or CH376) at startup (no need, better switch in via pre-processor directive)		
+    - bluetooth activity LED - no need, bluetooth LED just blinks for status, does not change voltage 
+    - LCD reset pin. Otherwise, need to improve LCD reset circuit, currently LCD distorted after MPlab flashing.
+    - proper SI4735 reset - no need, SI4735 works fine at boot mostly, except sometimes after MPlab flashing.
+    - alarm clock module - need to make sure music IC play in repeat mode. Or no need, just play alarm via our sound system.    
+    - for UART input? - no use for now
+    - headphone jack status - no use, our LM555 does this directly
+    - rotary encoder for tuning / track seeking (need 3 pins, not just 1)
+    - SPI memory chip for soundfont for MIDI playback (mot feasible, memory almost full, cannot implement more features)
+---------------------
+
+To check SI4844?
+https://www.allaboutcircuits.com/projects/build-an-arduino-controlled-am-fm-sw-radio/
+http://theradioboard.com/rb/viewtopic.php?t=8730
+https://e2e.ti.com/support/audio/f/6/t/712045?TPA2016D2-Poor-reception-with-Si4731-AM-FM-receiver-IC
+https://forum.arduino.cc/index.php?topic=145187.0
+---------------------
+Buy SI4735 (not shipped) + SI4734 (same as SI4735, no SSB or RDS) (AliExpress)
+Test SI4730 to see if SW/LW is supported
+---------------------
+MQXPro remote control works better than the tiny remote control (strong LED)
+Design works fine with 9V battery until 5V with headphone!
+
+Audio recording - DC offset
+Remove in goldwave using 20Hz high pass filter
+(Capacitor cannot be used before ADC to remove DC offset as it creates negative voltage)
+Op amp can run from negative supply to avoid DC offset, but this will require extra components
+
+DC input jack? (no need, will disturb radio)
+---------------------
+length (PC units) vs length (bytes) 
+
+No extra space is needed to store data in data memory (e.g. 2 bytes of flash is used for 2 bytes of data)
+However, to store constant data in program memory, an extra byte is required due to the need to WORD-align data
+and for dsPIC instruction word is 24-bit (3 bytes).
+So 3 bytes of flash is required for 2 bytes of data.
+
+Length (PC units) - raw data length
+Length (bytes) - flash data length
+
+To avoid wasting the extra byte, one can write codes to access the flash directly.
+---------------------
+Vietnam Songs/xin hay tra loi em.mp3
+Xin con nho nhau-QTD.mp3, ok with other songs!
+
+song with "loud" audio segment.
+this is because MP3 decoder decodes to 16bit with saturation, any values higher or lower than the limit will be clipped
+
+https://hydrogenaud.io/index.php?topic=82112.0
+
+At 12-bit, PWM is only @ 47kHz, not enough if amplitude is varying widely
+output will appear as a straight line following normal PWM output, causing distortion
+
+Reducing PWM bit count increases the frequency, but then there is also not enough PWM discrete value to cover the varying amplitude too!
+
+I2S can be emulated using 16-bit SPI, but need a separate timer to cover WS (word select) pin 
+SPI freq selection not flexible enough to cover popular audio frequency
+---------------------
+We can also use printf for printing
+However it causes weird behaviour (interrupted audio even when it's not used)
+Might be because printf is blocking (wait until UART byte is sent) and also due to VARARGS usage (stack overflow?)
+best to stick to our SendUARTStr 
+sprintf cannot use %.1f it will lead to const section being linked in program space and crash!
+same for many floating point calculation functions
+---------------------
+LT1763 has reverse polarity protection which works by itself
+For this to work, use a non-polarized capacitor for the input decoupling caps
+Otherwise the capacitor will get hot and die if reverse polarity is applied.
+
+https://github.com/schellingb/TinySoundFont
+use with general MIDI soundfont file
+---------------------
+I measured pin to pin resistance on a bare 44 pin, 64K module and found that AVdd is connected internally to Vdd.
+The resistance from AVdd to Vdd is about 2 ohms, the same as between the various Vdd pins.
+So it makes no sense to use 2 separate regulators, all the current would be supplied by the highest supply and both would be noisy.
+ 
+There is no continuity between AVss and Vss so AVss can act as a quiet reference if tied to a quiet ground point.
+It is interesting to note that the 28 pin module has no AVdd or AVss pins.
+
+https://www.microchip.com/forums/m768005.aspx
+
+(not true for dsPIC33EP512MC502 DIP-28, resistance between AVDD and VDD is around 40K. AVSS and VSS is connected.
+AVDD and VDD must come from same power supply.
+---------------------
+current consumption
+400uA standby 
+50mA in radio mode
+150mA average playback
+---------------------
+Overclocked speed just enough to handle 128kbps 44.1kHz stereo MP3
+On SD card, works nice with no queue underflow/overflow
+On USB, some songs might result in underflow/overflow, masked by the T4 timer reusing last available data (no click)
+---------------------
+https://www.microchip.com/forums/m422373.aspx
+
+search the sample code for a file named "traps.c". include this file in your project.
+An un-handled trap or interrupt, by defaut, is vectored to a RESET.
+
+if it is a trap, then search the forum for "calum" or "calum trick" include this code to determine what line of code caused the trap.
+
+https://www.microchip.com/forums/tm.aspx?m=243913&mpage=1&key=where_was_i%F1%9B%8D%BC
+---------------------
+2 causes for crash when power on: clock switching or circuit psu suddenly turned on (surge)
+Clock switching between  high speed --> LPRC and LPRC <--> low speed no issues
+Crash (clock trap) when switching between LPRC --> high speed too many times (got to do with overclocking)
+---------------------
+risk of const table growing into program memory by linker (need to keep large constants in PSV X-memory or as _prog_)
+
+331 is a 3x3 pixel font with 1-bit color.
+
+The characters are arranged in ASCII-order:
+
+https://github.com/start/331
+https://www.dafont.com/3x3-font-for-nerds.font
+
+3x5 font https://github.com/dyama/tiny3x5font
+
+Preserve program memory not always correct
+if programming failed, it will write 0xFF

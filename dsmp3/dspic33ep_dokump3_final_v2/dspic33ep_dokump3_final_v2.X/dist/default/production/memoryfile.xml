@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <executable name="dist/default/production/dspic33ep_dokump3_final_v2.X.production.elf">
+    <memory name="data">
+      <units>bytes</units>
+      <length>49152</length>
+      <used>42550</used>
+      <free>6602</free>
+    </memory>
+    <memory name="program">
+      <units>bytes</units>
+      <length>524514</length>
+      <used>426975</used>
+      <free>97539</free>
+    </memory>
+  </executable>
+</project>

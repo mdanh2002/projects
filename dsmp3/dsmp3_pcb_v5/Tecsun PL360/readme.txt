@@ -1,0 +1,2 @@
+﻿МКГН - millihenry
+МКФ - microfarads

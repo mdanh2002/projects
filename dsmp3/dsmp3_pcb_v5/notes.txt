@@ -1,0 +1,287 @@
+pot 47k, not 10k for volume
+
+---------
+
+RC filter before bluetooth input (avoid the need for isolation transformer)
+potentiometer for op amp
+
+
+C18/R27 location too far 
+Decoupling capacitor on NE556 vcc
+Capacitor too close to DHT11 
+Resistance of recording trimmer around 7-8k for audio recording to pass.
+
+A5K variable resistor (log) to adjust mixer volume
+
+Sensitive headphone sensor on switch mode PSU (battery is ok)
+
+Nosy bluetooth (need isolation transformer)
+
+Use PAM8403 + NE555 (DIP sockets!) for final release
+
+Get 3.5mm headphone cable
+
+Dual potentionmeter for mixer feedback (A5K/A10K)
+Label for potentionmeter
+
+Move sockets down (silkscreen labels on the side)
+
+
+----------------------
+
+Bluetooth volume too low, R38 / R34 680 Ohm is fine
+
+Move top left voltage regulator up, otherwise it will touch volume control know
+ 
+Add I2C coupling cáp to mainboard (curently only on radio board)
+(Consider Remove SDA 120pf cap. Reduce SCL value)
+
+----------------------
+
+Background noise when bluetooth is up.
+Background noise in radio louder in REC mode (disturbance from crystal)
+
+Unable to switch mode when battery is low (cannot write EEPROM)
+Choppy audio when battery is low
+
+Noise from Riden power supply (or is it from 36V adapter?) makes it impossible to use analog keypad. Works fine when
+running on battery. Need better bench power supply.
+To run on bench power supply, need a higher decoupling capacitor on VIN (9-12V).
+However that capacitor needs to be non-polarized (max is 10uF) for reverse polarity protection, not enough.
+Hence we run on battery only.
+
+Tantalum capacitor better at decoupling than electrolytics
+
+C52 / C38 (input capacitor) for NS8002 must be non-polarized  and 0.1uF
+Higher values or polarized capacitor will cause wierd behaviour 9e.g. NS8002 will consume max current after capacitor has charged up)
+
+Heat sink on NS8002 amplifier (MAYBE NO NEED)
+
+Capacitor issues touching NE555 (unused pins?)
+
+SI4735 DBYP shorted to GND (normal behaviour)
+
+Maybe consider onboard SD card socket
+
+PCB mounting holes
+-------------------
+
+https://support.jlcpcb.com/article/102-kicad-515---generating-gerber-and-drill-files
+
+Need to put solder mask bridge is required in PCB order notes (jlcpcb), else there will be no
+solder mask between pins for si4735
+
+We order using JLCPCB but seeedstudio has a very nice gerber viewer 
+https://www.seeedstudio.com/fusion_pcb.html?utm_source=fuedm15&utm_medium=mailchimp&utm_campaign=fu_1208
+
+Best to use 8002A bought from Aliexpress (works well, no disturbance, SHDN works)
+8002B bought from Aliexpress might be fake (some distorted audio, some no audio, some work but SHDN pin failed)
+There is also 8002D which works but suspicious. Is it class D? Doesn't seem like as there is no radio disturbance unlike PAM8403
+
+8002A quiescent current is 5mA which is removed in shutdown mode (e.g. headphone plugged in).
+
+Use jlcpcb coupons (might not be always available) - min $20 
+
+Valid coupons from here
+
+https://www.couponbirds.com/codes/jlcpcb.com?key=8795220743361
+
+-----------------
+All ground plane "areas" must be connected - there should be no isolated ground plane areas
+If there is an isolated ground plane area, KiCad might show a rasnet line going from a GND pin leading to nowhere.
+-----------------
+
+Kicad ERC does not always detect dangling wires
+which is a bug
+
+see: https://bugs.launchpad.net/kicad/+bug/1826437
+
+-----------------
+
+(OK)
+Remove DS1337 RTC module and AM2320 temperature sensor from PCB 
+24LC256 power supply is 3V3SD, not 3V3PIC
+Move DHT11 to near I2C section of schematics
+Modify DHT11 to use shared pins with LCDRS/U1TX using internal pull-up
+DHT11 lines must be away from antenna, else auto-tuning might perform poorly.
+Labels for DH11 connectors 
+
+(OK)
+Power for LCD LED_IN (before resistor) should be connected to 3V3SD, and not to 3V3PIC
+Wrong connections for RC reset circuit and VDD on LCD pins 
+Diode across resistor for reset capacitor faster discharge when power is removed (not much effect when tested, put in just in case)
+Add 3 pins trimmer resistor (5k) for LCD backlight brightness. Only 2 pins are used.
+Capacitor C9 wrong polarity on PCB silkscreen	
+Redundant PCB trace at the back near C9 (maybe moot after PCB is redesitgned)
+Reduce values of reset capacitor (maybe 1uF for both SI4735 and LCD)
+Remove CLK_EN and CLK_PWR jumper
+
+(OK)
+DEBUG connector should contain MCLR pin 
+Labels for LCD/KEYB/DEBUG connector pins 
+Add decoupling capacitor closest to PIC VDD pins
+Power pin for bluetooth module (5VSPK)
+Ground pin for BT should really be ground, and not 2.5V 
+
+(OK)
+R42 should be from pin 1 to pin 2 (opamp feedback)
+R36 not connected to pin 6 (gap in schematics!!!)
+Increase R38 and R34, otherwise clipping on Bluetooth. Around 6.8k is good. 
+Increase R31 and R35, otherwise slight background noises in MP3/SD card mode. Maybe 4.7k. 
+For line-in, 680Ohm is sufficient (user can just adjust output volume)
+Remove buzzer from current location (connected to T1CK)
+
+---------------------
+
+(OK)
+Move 12V trace at power input further away from 3V3 trace
+
+---------------------
+
+(OK)
+Swapped SDO/SDI for CH376 SPI 
+
+---------------------
+
+(OK)
+
+Add jumper to allow connecting PIC SD card pins to buzzer (reduce PWM beep disturbance) / SI4735 INT (for RDS) connected to INT0 (SD-SCK)
+This allows us to use CH376 as SD card card reader as free-up 4 pins
+
+---------------------
+
+(OK)
+
+Removed tuned antenna system 
+L1 (180nF) removed. Replace antenna series capacitor with 1nF 
+Keep series inductor at shortwave antenna but icnrease width (otherwise we can't solder it)
+Adjust hole size of AM trimmer resistors
+
+Modify incorrect SI4735 antenna jumper position (switch should short AM capacitor in AM mode, intended). In SM mode, the capacitor + inductor act
+band stop filter for AM frequencies.
+Pin 3 of ANT_SWICH connected to before AM_ANT 
+
+Diode across resistor for reset capacitor faster discharge when power is removed (not much effect when tested, put in just in case)
+
+---------------------
+
+(OK)
+
+MCLR header should contain 3VPIC and GND 
+Adjust DHT11 spacing (too close to PIC socket)
+
+---------------------
+
+(OK)
+
+Add ESD protection on antenna pins (no need for USB, or SD card).
+CM1213-04S0 (SOT23/SC-74) 0.95MM pin pitch (larger than SI4735 0.65mm)
+it has SOIC package which is obsolete. Runs on 3.3V
+The SI4735 by itself has ESD protection on certain pins
+
+---------------------
+
+(OK)
+Optional pull-up at SD pin (leave it like that to be the same as datasheet, not use yet)
+Replace PAM8403 with NS8002 (Class AB amplifier, not class D which uses PWM and causes radio disturbance)
+Be careful of NS8002 SHDN (active high or low?). If active high, might not need NE555.
+Just use standard 3-pin connectors for both channel trimmers (we will connect volume control externally)
+NS8002 shutdown is activehigh (high > 1.2V, low < 0.9V), will need NE556
+Update for stereo, reduce spacing in TDA1308
+Follow datasheet closely, maybe add more decoupling capacitors
+Power supply decoupling capacitor (470uF) must be close to 5VSPK, whereas input decoupling capacitor (10uF) must be as close to the chip as possible
+to avoid clipping audio issues like what we have for PAM8403.
+
+---------------------
+
+(OK)
+
+Add mono audio output on headphone unused pin
+
+Use 2 amplifier (stereo output) with jumpers for mono / stereo (no need for now, mono only, very messy with stereo)
+
+---------------------
+
+Add ON/OFF switch on PCB move current power jack to the left
+(no need, switch will be neat battery socket)
+
+
+Add PTC polyswitch fuse (consider voltage drop)
+(no need, will use regular fuse near battery outside PCB)
+
+---------------------
+
+Kicad will hang when updating PCB if the footprint field contains unresolable value!
+
+Footprint of capacitor very tight for tantalum caps
+(quite hard to change without changing entire PCB)
+leave as is
+
+---------------------
+
+Review values of MCLR and battery ADC voltage divider resistors (to increase for lower standby current consumption)
+Review I2C capacitor (120pF too high, works alone but will fail if oscilloscope probe is connected)
+Add heat sinks on LT1763 (maybe PIC as well)
+Maybe order stencil for next design
+
+---------------------
+
+Test effect of metal shield on shortwave/medium wave disturbance
+(maybe shield SI4735, SD card or USB). Consider ferrite bead)
+ 
+See if running at 32MHz vs 8MHz makes any difference on speed.
+Currently slightly slow at 8MHz, esp. RDS
+But increasing speed will also increase radio disturbance
+Currently PIC internal oscillator can be heard on shortwave in high speed mode
+(need to adjust at minimum the delay function)
+
+---------------------
+
+Without suitable decoupling capacitor, PIC bootup will be sensitive to heat and noise
+e.g. crash when running on PSU but works fine on battery. Using compressed air turned upside down to simulate
+freezer can might also make the PIC work.
+
+Radio works on par with Tecsun PL-365 when there are no interferences. When there are interferences (e.g. PC switched mode power supply or USB serial module),
+reception is weak. 
+
+Headphone acts as antenna if cable is long. Need antenna ferrite bead filter? (no need for now) 
+Maybe test with Aliexpress stereo headphone isolation transformer.
+
+Must run on battery, Switched mode power supply has noises interfering with radio reception.
+
+---------------------
+
+SI4735 crystal critical for accurate frequency tuning
+If crystal frequency is wrong, auto tuning might not find stations or find fewer stations even though these stations have strong signals
+Manual tuning might also not reach the exact frequency
+more obviously with SSB when testing with function generate in sine wave mode. For example, with nominal SSB frequency at 6MHz, 1kHz tone
+should be heard in LSB (lower side band) mode if function generate is set to 5.9kHz. If func gen set to 6.1kHz, tone should be heard in USB (upper side band) mode.
+Any inaccuracies in crystal freq will result in wrong USB/LSB behaviour
+Use a frequency counter or oscilloscope and make sure crystal is at exactly 32768 Hz (some ebay crystals are not)
+Voltage threshold might be too low to trigger on some counters/multimeters. Check with oscilloscope.
+Auto tuning very sensitive to antenna series capacitor and associated disturbance
+
+We can use T1CK to SI4735 (no need for crystal),
+but since T1CK is always on, SI4735 must always be on (otherwise it might be damaged if voltage is passed to it while off). 
+So we need to connect SI4735 to 3V3PIC to save power in standby
+but I2C must be connected to 3V3SD due to pull-up
+Not recommended due to separate power supply
+
+---------------------
+
+No need for 2200uF decoupling, just  follow datasheet regarding position of decoupling capacitor for PAM8403 (1uF and 470uF critial)
+PAM8403 causes noises (Class D audio amplifier). Works much better in headphone mode (PAM8403 is off).
+Tried with audio isolation transformer on left input pins. Noises reduced but not as good.
+Must replace PAM8403 (Class D) with NS8002 (Class AB) that runs on 5V, so as not to causes FM inteference.
+
+---------------------
+
+SI4735 pad must use heat gun + solder paste for soldering
+Crystal load capacitor not critical
+If 32768 crystal not oscillating, I2C interface will work (e.g. version returns 55.48 correctly)
+but tuning will fail (cannot read back proper frequency)
+
+Mix solder paste + flux and use a resistor leg to stir
+Use the resistor leg to apply solder paste just enough (should not totally cover pads)
+Place chip on pad and use heat gun (320C-500C), straight at chip, lowest temperature
+Use fine tip soldering iron to fix bridged pins (not too much, else PCB trace will lift)
